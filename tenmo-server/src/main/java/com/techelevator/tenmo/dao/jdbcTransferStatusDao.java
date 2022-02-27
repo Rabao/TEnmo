@@ -1,17 +1,21 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.TransferStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
+
 @Component
 public class jdbcTransferStatusDao implements TransferStatusDao{
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void jdbcTransferTypeDao(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
+    public void jdbcTransferTypeDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 

@@ -1,11 +1,9 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.UserCredentials;
-import com.techelevator.tenmo.services.AccountService;
-import com.techelevator.tenmo.services.AuthenticationService;
-import com.techelevator.tenmo.services.AuthenticationServiceException;
+import com.techelevator.tenmo.exceptions.InvalidUserChoiceException;
+import com.techelevator.tenmo.exceptions.UserNotFoundException;
+import com.techelevator.tenmo.model.*;
+import com.techelevator.tenmo.services.*;
 import com.techelevator.view.ConsoleService;
 
 public class App {
@@ -29,19 +27,33 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     private AuthenticationService authenticationService;
 
 	private AccountService accountService;
+	private UserService userService;
+	private TransferTypeService transferTypeService;
+	private TransferStatusService transferStatusService;
+	private TransferService transferService;
+
+	private static int transferIdNumber;
 
     public static void main(String[] args) {
     	App app = new App(
 				new ConsoleService(System.in, System.out),
 				new AuthenticationService(API_BASE_URL),
-				new AccountService(API_BASE_URL));
+				new AccountService(API_BASE_URL),
+				new UserService(API_BASE_URL),
+				new TransferTypeService(API_BASE_URL),
+				new TransferStatusService(API_BASE_URL),
+				new TransferService(API_BASE_URL));
     	app.run();
     }
 
-    public App(ConsoleService console, AuthenticationService authenticationService, AccountService accountService) {
+    public App(ConsoleService console, AuthenticationService authenticationService, AccountService accountService, UserService userService, TransferTypeService transferTypeService, TransferStatusService transferStatusService, TransferService transferService) {
 		this.console = console;
 		this.authenticationService = authenticationService;
 		this.accountService = accountService;
+		this.userService = userService;
+		this.transferTypeService = transferTypeService;
+		this.transferStatusService = transferStatusService;
+		this.transferService = transferService;
 	}
 
 	public void run() {
@@ -76,16 +88,12 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewCurrentBalance() {
-		try {
-			Account acc = accountService.getAccount(currentUser);
-			System.out.println(acc.getBalance());
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		Double bal = accountService.getBalance(currentUser);
+		System.out.println("You currently have a balance of:  $" + bal.toString());
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+
 		
 	}
 
@@ -95,11 +103,19 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void sendBucks() {
-		Account[] accounts = accountService.getAccounts(currentUser);
-		for(Account acc : accounts){
-			System.out.println(accountService.getUsername(currentUser, acc.getUser_id()) + " | " + acc.getUser_id());
+		User[] users = userService.getAllUsers(currentUser);
+		System.out.println("-------------------------------");
+		System.out.println("Users");
+		System.out.println("ID          Name");
+		System.out.println("-------------------------------");
+
+		console.printUsersToDisplay(users);
+
+		int userChoice = console.getUserInputInteger("Please enter the ID of the person you want to send money to, or input 0 to cancel: ");
+		if (validateUserChoice(userChoice, users, currentUser)){
+			String amnt = console.getUserInput("Enter ammount of funds to send: ");
+			makeAtransfer(userChoice, amnt, "Send", "Approved");
 		}
-		
 	}
 
 	private void requestBucks() {
@@ -109,6 +125,59 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	
 	private void exitProgram() {
 		System.exit(0);
+	}
+
+	private Transfer makeAtransfer(int accountSenderuserId, String amntStr, String transferType, String status){
+		int transferTypeId = transferTypeService.getTransferType(currentUser, transferType).getTransferTypeId();
+		int transferStatusId = transferStatusService.getTransferStatusByDesc(currentUser, status).getTransferStatusId();
+		int senderId;
+		int receiverId;
+		if(transferType.equals("Send")){
+			receiverId = accountService.getAccountByUserId(currentUser, accountSenderuserId).getAccount_id();
+			senderId = accountService.getAccountById(currentUser, currentUser.getUser().getId()).getAccount_id();
+		} else {
+			receiverId = accountService.getAccountByUserId(currentUser, currentUser.getUser().getId()).getAccount_id();
+			senderId = accountService.getAccountById(currentUser,accountSenderuserId).getAccount_id();
+		}
+
+		double amnt = Double.parseDouble(amntStr);
+
+		Transfer transfer = new Transfer();
+		transfer.setAccountFrom(senderId);
+		transfer.setAccountTo(receiverId);
+		transfer.setBalance(amnt);
+		transfer.setTransferStatusId(transferStatusId);
+		transfer.setTransferTypeId(transferTypeId);
+		transfer.setTransferId(transferIdNumber);
+
+		transferService.createTransfer(currentUser,  transfer);
+		App.increaseIdForTransNum();
+		return transfer;
+	}
+
+	private boolean validateUserChoice(int userIdChoice, User[] users, AuthenticatedUser currentUser) {
+		if(userIdChoice != 0) {
+			try {
+				boolean validUserIdChoice = false;
+
+				for (User user : users) {
+					if(userIdChoice == currentUser.getUser().getId()) {
+						throw new InvalidUserChoiceException();
+					}
+					if (user.getId() == userIdChoice) {
+						validUserIdChoice = true;
+						break;
+					}
+				}
+				if (validUserIdChoice == false) {
+					throw new UserNotFoundException();
+				}
+				return true;
+			} catch (UserNotFoundException | InvalidUserChoiceException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return false;
 	}
 
 	private void registerAndLogin() {
@@ -166,4 +235,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		String password = console.getUserInput("Password");
 		return new UserCredentials(username, password);
 	}
+
+	public static void increaseIdForTransNum() {
+		transferIdNumber += 1;
+	}
+
 }

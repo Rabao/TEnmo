@@ -1,40 +1,48 @@
 package com.techelevator.tenmo.dao;
 
-import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.TransferType;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import javax.sql.DataSource;
+
 
 @Component
-public class jdbcTransferTypeDao implements TransferDao {
+public class jdbcTransferTypeDao implements TransferTypeDao {
 
-    @Override
-    public List<Transfer> getAllTransfers() {
-        return null;
+    private JdbcTemplate jdbcTemplate;
+
+    public jdbcTransferTypeDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
-    public List<Transfer> getTransfersByUserId(int userId) {
-        return null;
+    public TransferType getTransferTypeFromDesc(String desc) {
+        TransferType transferType = null;
+        String sql = "select * from transfer_types where transfer_type_desc = ?; ";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, desc);
+        if(result.next()){
+            int transferTypeId  = result.getInt("transfer_type_id");
+            String transferTypeDesc = result.getString("transfer_type_desc");
+            transferType = new TransferType(transferTypeId, transferTypeDesc);
+        }
+        return transferType;
     }
 
     @Override
-    public Transfer getTransferByTransId(int transId) {
-        return null;
-    }
+    public TransferType getTransferTypeFromId(int transId) {
+        TransferType transferType = null;
 
-    @Override
-    public List<Transfer> getPendingTransfers(int userId) {
-        return null;
-    }
+        String sql = "select * from transfer_types where transfer_type_id = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, transId);
+        if(result.next()) {
 
-    @Override
-    public boolean createTransfer(Transfer trans) {
-        return false;
-    }
+            int transferTypeId = result.getInt("transfer_type_id");
+            String transferTypeDesc = result.getString("transfer_type_desc");
 
-    @Override
-    public boolean changeTransfer(Transfer transfer) {
-        return false;
+            transferType = new TransferType(transferTypeId, transferTypeDesc);
+        }
+        return transferType;
     }
 }

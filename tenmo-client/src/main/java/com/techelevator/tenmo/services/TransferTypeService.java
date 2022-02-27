@@ -1,8 +1,7 @@
 package com.techelevator.tenmo.services;
 
-import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
-import io.cucumber.java.bs.A;
+import com.techelevator.tenmo.model.TransferType;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,57 +9,42 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AccountService {
+public class TransferTypeService {
     private String baseUrl;
     private RestTemplate restTemplate;
 
-    public AccountService(String baseUrl) {
+    public TransferTypeService(String baseUrl) {
         this.restTemplate = new RestTemplate();
         this.baseUrl = baseUrl + "/account/";
     }
 
-    public double getBalance(AuthenticatedUser authenticatedUser){
-        double bal = 0;
+    public TransferType getTransferType(AuthenticatedUser  authenticatedUser, String desc){
+        TransferType transferType = null;
 
         try {
-            bal = restTemplate.exchange(baseUrl + "balance", HttpMethod.GET, createHttps(authenticatedUser), double.class).getBody();
+            String url = baseUrl + "transfer/type/filter?desc=" + desc;
+            transferType = restTemplate.exchange(url, HttpMethod.GET, createHttps(authenticatedUser), TransferType.class).getBody();
         } catch (RestClientResponseException e){
             System.out.println("Could not complete: " + e.getRawStatusCode());
         } catch (ResourceAccessException e){
             System.out.println("Could not complete. Server network problem. Try again. ");
         }
-        return bal;
+        return transferType;
     }
 
-    public Account getAccountByUserId(AuthenticatedUser authenticatedUser, int userId){
-        Account account = null;
+    public TransferType getTransferFromId(AuthenticatedUser authenticatedUser, int transId){
+        TransferType transferType = null;
 
         try {
-            account = restTemplate.exchange(baseUrl + "user/" + userId, HttpMethod.GET, createHttps(authenticatedUser), Account.class).getBody();
-        }catch (RestClientResponseException e){
+            String url = baseUrl + "transfer/type/" + transId;
+            transferType = restTemplate.exchange(url, HttpMethod.GET, createHttps(authenticatedUser), TransferType.class).getBody();
+        } catch (RestClientResponseException e){
             System.out.println("Could not complete: " + e.getRawStatusCode());
         } catch (ResourceAccessException e){
             System.out.println("Could not complete. Server network problem. Try again. ");
         }
-        return account;
+        return transferType;
     }
-
-    public Account getAccountById(AuthenticatedUser authenticatedUser, int accId){
-        Account account = null;
-        try {
-            account = restTemplate.exchange(baseUrl + accId, HttpMethod.GET, createHttps(authenticatedUser), Account.class).getBody();
-        }catch (RestClientResponseException e){
-            System.out.println("Could not complete: " + e.getRawStatusCode());
-        } catch (ResourceAccessException e){
-            System.out.println("Could not complete. Server network problem. Try again. ");
-        }
-        return account;
-    }
-
-
 
     private HttpEntity createHttps(AuthenticatedUser authenticatedUser){
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -69,4 +53,6 @@ public class AccountService {
 
         return entity;
     }
+
+
 }
