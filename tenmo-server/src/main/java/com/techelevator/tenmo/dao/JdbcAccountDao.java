@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import javax.sql.DataSource;
 @Component
 public class JdbcAccountDao implements AccountDao{
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public JdbcAccountDao(DataSource dataSource) {

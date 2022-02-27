@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Transfer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.util.List;
 @Component
 public class JdbcTransferDao implements TransferDao {
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public void jdbcTransferTypeDao(DataSource dataSource) {

@@ -134,7 +134,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		int receiverId;
 		if(transferType.equals("Send")){
 			receiverId = accountService.getAccountByUserId(currentUser, accountSenderuserId).getAccount_id();
-			senderId = accountService.getAccountById(currentUser, currentUser.getUser().getId()).getAccount_id();
+			senderId = accountService.getAccountByUserId(currentUser, currentUser.getUser().getId()).getAccount_id();
 		} else {
 			receiverId = accountService.getAccountByUserId(currentUser, currentUser.getUser().getId()).getAccount_id();
 			senderId = accountService.getAccountById(currentUser,accountSenderuserId).getAccount_id();
