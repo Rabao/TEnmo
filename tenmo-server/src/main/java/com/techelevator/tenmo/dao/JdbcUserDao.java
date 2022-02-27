@@ -51,7 +51,7 @@ public class JdbcUserDao implements UserDao {
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, username);
         if (rowSet.next()){
             return mapRowToUser(rowSet);
-            }
+        }
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
 
@@ -59,20 +59,24 @@ public class JdbcUserDao implements UserDao {
     public boolean create(String username, String password) {
 
         // create user
-        String sql = "INSERT INTO users (username, password_hash) VALUES (?, ?) RETURNING user_id";
+        String sql = "INSERT INTO users (username, password_hash) VALUES (?, ?) RETURNING user_id; ";
         String password_hash = new BCryptPasswordEncoder().encode(password);
         Integer newUserId;
         try {
             newUserId = jdbcTemplate.queryForObject(sql, Integer.class, username, password_hash);
+            System.out.println(newUserId);
         } catch (DataAccessException e) {
+            e.printStackTrace();
             return false;
         }
 
         // create account
         sql = "INSERT INTO accounts (user_id, balance) values(?, ?)";
         try {
+            System.out.println("test2");
             jdbcTemplate.update(sql, newUserId, STARTING_BALANCE);
         } catch (DataAccessException e) {
+            e.printStackTrace();
             return false;
         }
 

@@ -1,6 +1,9 @@
 package com.techelevator.tenmo.controller;
 
 
+import com.techelevator.tenmo.dao.AccountDao;
+import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +15,13 @@ import javax.validation.Valid;
 @PreAuthorize("IsAuthenticated()")
 public class AccountController {
 
+    private UserDao userDao;
+    private AccountDao accountDao;
 
-    @GetMapping(path = "balance/{id}")
+    @GetMapping(path = "/balance/{id}")
     @PreAuthorize("hasRole('USER')")
-    public void getBalance(@PathVariable int id){
-
+    public double getBalance(@PathVariable int id){
+        return accountDao.getAccount(id).getBalance();
     }
 
     @PostMapping(path = "/transfer")
