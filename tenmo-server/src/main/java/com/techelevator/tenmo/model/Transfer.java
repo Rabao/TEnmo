@@ -1,11 +1,25 @@
 package com.techelevator.tenmo.model;
 
+import javax.validation.constraints.NotBlank;
+
 public class Transfer {
+
+
     private int id;
+
+    @NotBlank
     private int transferTypeId;
+
+    @NotBlank
     private int transferStatusId;
+
+    @NotBlank
     private int accountFrom;
+
+    @NotBlank
     private int accountTo;
+
+    @NotBlank
     private double amount;
 
     public Transfer() {}

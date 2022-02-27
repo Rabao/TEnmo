@@ -3,16 +3,23 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcTransferDao implements TransferDao{
+@Component
+public class JdbcTransferDao implements TransferDao {
 
     private JdbcTemplate jdbcTemplate;
 
+    public void jdbcTransferTypeDao(JdbcTemplate jdbcTemplate){
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+
     @Override
-    public List<Transfer> findAll() {
+    public List<Transfer> getAllTransfers() {
         List<Transfer> transfers = new ArrayList<>();
         String sql = "select * from transfers; ";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
@@ -24,18 +31,60 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public Transfer findTranserById(int id) {
-        return null;
+    public List<Transfer> getTransfersByUserId(int userId) {
+        List<Transfer> transfers = new ArrayList<>();
+        String sql = "select * from transfers join accounts on accounts.account_id = transfers.account_from or accounts.account_id = transfers.account_to where user_id = ?; ";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        while (results.next()){
+            transfers.add(mapRowToTransfer(results));
+        }
+        return transfers;
     }
 
     @Override
-    public Transfer findTransferByAccountTo(int accountTo) {
-        return null;
+    public Transfer getTransferByTransId(int transId) {
+        Transfer trans = null;
+        String sql = "select * from transfers where transfer_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transId);
+        if(results.next()){
+            trans = mapRowToTransfer(results);
+        }
+        return trans;
     }
 
     @Override
-    public Transfer findTransferByAccountFrom(int accountFrom) {
-        return null;
+    public List<Transfer> getPendingTransfers(int userId) {
+        List<Transfer> transfers = new ArrayList<>();
+        String sql = "select * from transfers join accounts on accounts.account_id = transfers.account_from" +
+                "join transfer_statuses on transfers.transfer_status_id = transfer_statuses.transfer_status_id " +
+                "where user_id = ? and transfer_status_desc = 'Pending';";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        while (results.next()){
+            transfers.add(mapRowToTransfer(results));
+        }
+        return transfers;
+    }
+
+    @Override
+    public boolean createTransfer(Transfer trans) {
+        String sql = "insert into transfers (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) values (?, ?, ?, ?, ?, ?)";
+        try {
+            jdbcTemplate.update(sql, trans.getId(), trans.getTransferTypeId(), trans.getTransferStatusId(), trans.getAccountFrom(), trans.getAccountTo(), trans.getAmount());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean changeTransfer(Transfer transfer) {
+        String sql = "update transfers set transfer_status_id = ? where transfer_id = ?; ";
+        try {
+            jdbcTemplate.update(sql, transfer.getTransferStatusId(), transfer.getId());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
@@ -49,4 +98,5 @@ public class JdbcTransferDao implements TransferDao{
         transfer.setAmount(rs.getDouble("amount"));
         return transfer;
     }
+
 }

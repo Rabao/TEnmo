@@ -5,13 +5,16 @@ import com.techelevator.tenmo.model.Transfer;
 import java.util.List;
 
 public interface TransferDao {
-    List<Transfer> findAll();
+  List<Transfer> getAllTransfers();
 
-    Transfer findTranserById(int id);
+  List<Transfer> getTransfersByUserId(int userId);
 
-    Transfer findTransferByAccountTo(int accountTo);
+  Transfer getTransferByTransId(int transId);
 
-    Transfer findTransferByAccountFrom(int accountFrom);
+  List<Transfer> getPendingTransfers(int userId);
 
+  boolean createTransfer(Transfer trans);
+
+  boolean changeTransfer(Transfer transfer);
 
 }

@@ -1,17 +1,9 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.Transfer;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
-
-import javax.security.auth.login.AccountNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class JdbcAccountDao implements AccountDao{
@@ -20,40 +12,51 @@ public class JdbcAccountDao implements AccountDao{
 
     public JdbcAccountDao(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate; }
 
+
     @Override
-    public Account[] listAccounts(){
-        List<Account> accounts = new ArrayList<>();
-        String sql = "select * from accounts; ";
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql);
-        while(rowSet.next()){
-            accounts.add(mapRowToAccount(rowSet));
+    public double getBalance(String username) {
+        double bal = 0;
+        String sql = "select balance from accounts join users on accounts.user_id = users.user_id where username = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+        if(results.next()){
+            bal  = results.getDouble("balance");
         }
-        Account[] arr = accounts.toArray(new Account[0]);
-        return arr;
+        return bal;
     }
 
     @Override
-    public String getUsernameByAccount(int userId) {
-        String username = "";
-        String sql = "select username from users where user_id = ?";
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, userId);
-        if (rowSet.next()){
-            username = rowSet.getString("username");
+    public Account getAccountByUserID(int userId) {
+        Account account = null;
+        String sql = "select * from accounts where user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        if(results.next()){
+            account = mapRowToAccount(results);
         }
-        return username;
+        return account;
     }
 
     @Override
-    public Account getAccount(int id) {
-        String sql = "select * from accounts where user_id = ? ";
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, id);
-        if (rowSet.next()){
-            return mapRowToAccount(rowSet);
+    public Account getAccountByAccountID(int accId) {
+        Account account = null;
+        String sql = "select * from accounts where account_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accId);
+        if(results.next()){
+            account = mapRowToAccount(results);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return account;
 
     }
 
+    @Override
+    public boolean changeAccount(Account acc) {
+        String sql = "update accounts set balance = ? where account_id = ?;";
+        try {
+            jdbcTemplate.update(sql, acc.getBalance(), acc.getAccount_id());
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
 
 
     private Account mapRowToAccount(SqlRowSet rs) {
@@ -63,5 +66,4 @@ public class JdbcAccountDao implements AccountDao{
         account.setBalance(rs.getDouble("balance"));
         return account;
     }
-
 }

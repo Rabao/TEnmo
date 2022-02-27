@@ -5,9 +5,10 @@ import com.techelevator.tenmo.model.Account;
 import java.util.List;
 
 public interface AccountDao {
-    Account getAccount(int id);
+    double getBalance(String user);
+    Account getAccountByUserID(int userId);
+    Account getAccountByAccountID(int accId);
 
-    Account[] listAccounts();
+    boolean changeAccount(Account acc);
 
-    String getUsernameByAccount(int userId);
 }
