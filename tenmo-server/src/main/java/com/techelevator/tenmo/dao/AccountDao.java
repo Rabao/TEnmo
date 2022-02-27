@@ -7,4 +7,7 @@ import java.util.List;
 public interface AccountDao {
     Account getAccount(int id);
 
+    Account[] listAccounts();
+
+    String getUsernameByAccount(int userId);
 }

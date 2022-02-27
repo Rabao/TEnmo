@@ -1,5 +1,6 @@
 package com.techelevator.tenmo;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
@@ -76,7 +77,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewCurrentBalance() {
 		try {
-			accountService.getAccount(currentUser.getUser().getId());
+			Account acc = accountService.getAccount(currentUser);
+			System.out.println(acc.getBalance());
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -93,7 +95,10 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
+		Account[] accounts = accountService.getAccounts(currentUser);
+		for(Account acc : accounts){
+			System.out.println(accountService.getUsername(currentUser, acc.getUser_id()) + " | " + acc.getUser_id());
+		}
 		
 	}
 

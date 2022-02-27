@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/account")
@@ -18,11 +19,24 @@ public class AccountController {
     private UserDao userDao;
     private AccountDao accountDao;
 
-    @GetMapping(path = "/balance/{id}")
-    @PreAuthorize("hasRole('USER')")
-    public double getBalance(@PathVariable int id){
-        return accountDao.getAccount(id).getBalance();
+    public AccountController(UserDao userDao, AccountDao accountDao) {
+        this.userDao = userDao;
+        this.accountDao = accountDao;
     }
+
+    @GetMapping()
+    @PreAuthorize("hasRole('USER')")
+    public Account[] getAccounts() { return accountDao.listAccounts(); }
+
+    @GetMapping(path = "/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public Account getAccount(@PathVariable int id){
+        return accountDao.getAccount(id);
+    }
+
+    @GetMapping(path = "/getUser/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public String getUsername(@PathVariable int id) { return accountDao.getUsernameByAccount(id); }
 
     @PostMapping(path = "/transfer")
     public void createTrans(){
