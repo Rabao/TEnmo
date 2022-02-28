@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.model;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 public class Transfer {
@@ -7,19 +8,19 @@ public class Transfer {
 
     private int id;
 
-    @NotBlank
+    @Min(0)
     private int transferTypeId;
 
-    @NotBlank
+    @Min(0)
     private int transferStatusId;
 
-    @NotBlank
+    @Min(0)
     private int accountFrom;
 
-    @NotBlank
+    @Min(0)
     private int accountTo;
 
-    @NotBlank
+    @Min(0)
     private double amount;
 
     public Transfer() {}

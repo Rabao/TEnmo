@@ -26,7 +26,7 @@ public class TransferService {
             HttpEntity<Transfer> entity = new HttpEntity(trans, headers);
 
             try {
-                restTemplate.exchange(baseUrl + "transfer", HttpMethod.POST, entity, Transfer.class);
+                restTemplate.exchange(baseUrl + "transfer/" + trans.getId(), HttpMethod.POST, entity, Transfer.class);
             } catch (RestClientResponseException e) {
                 if (e.getMessage().contains("Bad funds!")) {
                     System.out.println("Not enough money to transact. ");
@@ -41,7 +41,7 @@ public class TransferService {
         public Transfer[] getTransfersFromUserId(AuthenticatedUser authenticatedUser, int userId) {
             Transfer[] transfers = null;
             try {
-                transfers = restTemplate.exchange(baseUrl + "user/" + userId, HttpMethod.GET, createHttps(authenticatedUser), Transfer[].class).getBody();
+                transfers = restTemplate.exchange(baseUrl + "transfer/user/" + userId, HttpMethod.GET, createHttps(authenticatedUser), Transfer[].class).getBody();
             } catch (RestClientResponseException e){
                 System.out.println("Could not complete: " + e.getRawStatusCode());
             } catch (ResourceAccessException e){
@@ -72,6 +72,9 @@ public class TransferService {
             } catch (ResourceAccessException e){
                 System.out.println("Could not complete. Server network problem. Try again. ");
             }
+            for(Transfer transfer : transfers){
+                System.out.println("1");
+            }
             return transfers;
         }
 
@@ -94,7 +97,7 @@ public class TransferService {
             HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
 
             try {
-                restTemplate.exchange(baseUrl + "transfer/" + transfer.getTransferId(), HttpMethod.PUT, entity, Transfer.class);
+                restTemplate.exchange(baseUrl + "transfer/" + transfer.getId(), HttpMethod.PUT, entity, Transfer.class);
             } catch (RestClientResponseException e) {
                 if (e.getMessage().contains("Bad funds!")) {
                     System.out.println("Not enough money to transact. ");

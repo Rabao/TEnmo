@@ -69,6 +69,8 @@ public class AccountController {
 
         transferDao.createTransfer(transfer);
 
+        System.out.println("Created?");
+
         accountDao.changeAccount(sender);
         accountDao.changeAccount(receiver);
 
@@ -77,7 +79,6 @@ public class AccountController {
     @GetMapping(path = "/transfer/type/filter")
     @PreAuthorize("hasRole('USER')")
     public TransferType getTransferByDesc(@RequestParam String desc){
-        System.out.println(desc);
         return transferTypeDao.getTransferTypeFromDesc(desc);
     }
 

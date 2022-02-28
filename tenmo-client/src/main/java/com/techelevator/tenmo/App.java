@@ -1,5 +1,6 @@
 package com.techelevator.tenmo;
 
+import com.techelevator.tenmo.exceptions.InvalidTransferIdChoice;
 import com.techelevator.tenmo.exceptions.InvalidUserChoiceException;
 import com.techelevator.tenmo.exceptions.UserNotFoundException;
 import com.techelevator.tenmo.model.*;
@@ -32,7 +33,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private TransferStatusService transferStatusService;
 	private TransferService transferService;
 
-	private static int transferIdNumber;
 
     public static void main(String[] args) {
     	App app = new App(
@@ -93,8 +93,33 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewTransferHistory() {
+		Transfer[] transfers = transferService.getTransfersFromUserId(currentUser, currentUser.getUser().getId());
+		System.out.println("-------------------------------");
+		System.out.println("Users");
+		System.out.println("ID     From/To   Amount");
+		System.out.println("-------------------------------");
 
-		
+		for(Transfer transfer :  transfers){
+			System.out.println(transfer.getId() +  "  " + transfer.getAccountFrom() + "/" + transfer.getAccountTo() + "  " + transfer.getAmount());
+		}
+
+
+
+		int choiceId = console.getUserInputInteger("Please enter the Transfer ID to view details or a transfer, or input 0 to go back. ");
+		Transfer choice = validateTransferIdChoice(choiceId, transfers, currentUser);
+		if (choice != null){
+			System.out.println("-------------------------------");
+			System.out.println("Transfer Details");
+			System.out.println("-------------------------------");
+			System.out.println("Id: " + choice.getId());
+			System.out.println("From: " + choice.getAccountFrom());
+			System.out.println("To: " + choice.getAccountTo());
+			System.out.println("Type: " + choice.getTransferTypeId());
+			System.out.println("Status: " + choice.getTransferStatusId());
+			System.out.println("Amount $: " + choice.getAmount());
+		}
+
+
 	}
 
 	private void viewPendingRequests() {
@@ -132,27 +157,49 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		int transferStatusId = transferStatusService.getTransferStatusByDesc(currentUser, status).getTransferStatusId();
 		int senderId;
 		int receiverId;
+
 		if(transferType.equals("Send")){
 			receiverId = accountService.getAccountByUserId(currentUser, accountSenderuserId).getAccount_id();
 			senderId = accountService.getAccountByUserId(currentUser, currentUser.getUser().getId()).getAccount_id();
 		} else {
 			receiverId = accountService.getAccountByUserId(currentUser, currentUser.getUser().getId()).getAccount_id();
-			senderId = accountService.getAccountById(currentUser,accountSenderuserId).getAccount_id();
+			senderId = accountService.getAccountByUserId(currentUser,accountSenderuserId).getAccount_id();
 		}
 
 		double amnt = Double.parseDouble(amntStr);
 
+
 		Transfer transfer = new Transfer();
 		transfer.setAccountFrom(senderId);
 		transfer.setAccountTo(receiverId);
-		transfer.setBalance(amnt);
+		transfer.setAmount(amnt);
 		transfer.setTransferStatusId(transferStatusId);
 		transfer.setTransferTypeId(transferTypeId);
-		transfer.setTransferId(transferIdNumber);
 
 		transferService.createTransfer(currentUser,  transfer);
-		App.increaseIdForTransNum();
 		return transfer;
+	}
+
+	private Transfer validateTransferIdChoice(int choice, Transfer[] transfers, AuthenticatedUser authenticatedUser){
+		Transfer choiceToValidate = null;
+		if(choice != 0){
+			try {
+				boolean isvalid = false;
+				for(Transfer transfer : transfers){
+					if(transfer.getId() == choice){
+						isvalid = true;
+						choiceToValidate = transfer;
+						break;
+					}
+				}
+				if(isvalid == false){
+					throw new InvalidTransferIdChoice();
+				}
+			} catch (InvalidTransferIdChoice e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return choiceToValidate;
 	}
 
 	private boolean validateUserChoice(int userIdChoice, User[] users, AuthenticatedUser currentUser) {
@@ -236,8 +283,5 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		return new UserCredentials(username, password);
 	}
 
-	public static void increaseIdForTransNum() {
-		transferIdNumber += 1;
-	}
 
 }

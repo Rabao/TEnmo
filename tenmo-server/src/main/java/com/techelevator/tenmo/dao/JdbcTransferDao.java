@@ -70,11 +70,13 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public boolean createTransfer(Transfer trans) {
-        String sql = "insert into transfers (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) values (?, ?, ?, ?, ?, ?)";
+        String sql = "insert into transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) values (?, ?, ?, ?, ?)";
         try {
-            jdbcTemplate.update(sql, trans.getId(), trans.getTransferTypeId(), trans.getTransferStatusId(), trans.getAccountFrom(), trans.getAccountTo(), trans.getAmount());
+            jdbcTemplate.update(sql, trans.getTransferTypeId(), trans.getTransferStatusId(), trans.getAccountFrom(), trans.getAccountTo(), trans.getAmount());
+            System.out.println("created?");
             return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }
