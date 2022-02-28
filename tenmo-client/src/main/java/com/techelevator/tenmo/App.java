@@ -6,7 +6,7 @@ import com.techelevator.tenmo.exceptions.UserNotFoundException;
 import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.*;
 import com.techelevator.view.ConsoleService;
-import jdk.swing.interop.SwingInterOpUtils;
+
 
 public class App {
 
@@ -103,12 +103,20 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 		for(Transfer transfer :  transfers){
 
+
 			String fromUser = "From" + ":  " + userService.getUserById(currentUser, accountService.getAccountById(currentUser, transfer.getAccountFrom()).getUser_id()).getUsername();
 			String toUser = String.format("To: %-2s", userService.getUserById(currentUser, accountService.getAccountById(currentUser, transfer.getAccountTo()).getUser_id()).getUsername());
 
 
-			System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), fromUser, transfer.getAmount()));
-			System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), toUser, transfer.getAmount()));
+			if(transfer.getAccountFrom() == accountService.getAccountByUserId(currentUser, currentUser.getUser().getId()).getAccount_id()){
+				System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), toUser, transfer.getAmount()));
+
+			} else {
+				System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), fromUser, transfer.getAmount()));
+			}
+
+//			System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), fromUser, transfer.getAmount()));
+//			System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), toUser, transfer.getAmount()));
 		}
 
 
