@@ -1,4 +1,4 @@
-package com.techelevator.tenmo.services;
+package com.techelevator.tenmo.exceptions;
 
 public class AuthenticationServiceException extends Exception {
     private static final long serialVersionUID = 1L;

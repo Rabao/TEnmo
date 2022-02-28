@@ -58,9 +58,9 @@ public class JdbcTransferDao implements TransferDao {
     @Override
     public List<Transfer> getPendingTransfers(int userId) {
         List<Transfer> transfers = new ArrayList<>();
-        String sql = "select * from transfers join accounts on accounts.account_id = transfers.account_from" +
-                "join transfer_statuses on transfers.transfer_status_id = transfer_statuses.transfer_status_id " +
-                "where user_id = ? and transfer_status_desc = 'Pending';";
+        String sql = "select * from transfers join accounts on accounts.account_id = transfers.account_from " +
+                    "join transfer_statuses as ts on transfers.transfer_status_id = ts.transfer_status_id " +
+                    "where user_id = ? and transfer_status_desc = 'Pending';";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         while (results.next()){
             transfers.add(mapRowToTransfer(results));
@@ -70,7 +70,7 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public boolean createTransfer(Transfer trans) {
-        String sql = "insert into transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) values (?, ?, ?, ?, ?)";
+        String sql = "insert into transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) values (?, ?, ?, ?, ?);";
         try {
             jdbcTemplate.update(sql, trans.getTransferTypeId(), trans.getTransferStatusId(), trans.getAccountFrom(), trans.getAccountTo(), trans.getAmount());
             System.out.println("created?");

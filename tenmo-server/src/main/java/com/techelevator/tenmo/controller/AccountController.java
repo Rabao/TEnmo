@@ -3,6 +3,7 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.exceptions.BadFunds;
+import com.techelevator.tenmo.exceptions.WrongPrincipalApproved;
 import com.techelevator.tenmo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -143,12 +144,15 @@ public class AccountController {
     }
 
     @PutMapping(path = "/transfer/{id}")
-    @PreAuthorize("hasRole('USER')")
-    public void changeTransStatus(@RequestBody @Valid Transfer trans, @PathVariable int id ) throws BadFunds{
+    @PreAuthorize("#username == authentication.principal.username")
+    public void changeTransStatus(Principal principal, @RequestBody @Valid Transfer trans, @PathVariable int id ) throws BadFunds, WrongPrincipalApproved {
+
         if(trans.getTransferStatusId() == transferStatusDao.getTransStatusByDesc("Approved").getTransferStatusId()) {
             double transAmount = trans.getAmount();
             Account sender = accountDao.getAccountByAccountID(trans.getAccountFrom());
             Account receiver = accountDao.getAccountByAccountID(trans.getAccountTo());
+
+
 
             double newSenderBal = sender.getBalance() - transAmount;
             if(newSenderBal >= 0){
