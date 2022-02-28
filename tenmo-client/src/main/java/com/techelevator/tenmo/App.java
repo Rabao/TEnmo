@@ -6,6 +6,7 @@ import com.techelevator.tenmo.exceptions.UserNotFoundException;
 import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.*;
 import com.techelevator.view.ConsoleService;
+import jdk.swing.interop.SwingInterOpUtils;
 
 public class App {
 
@@ -89,23 +90,30 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewCurrentBalance() {
 		Double bal = accountService.getBalance(currentUser);
-		System.out.println("You currently have a balance of:  $" + bal.toString());
+		System.out.println("Your current account balance is:  $" + bal.toString());
 	}
 
 	private void viewTransferHistory() {
+
 		Transfer[] transfers = transferService.getTransfersFromUserId(currentUser, currentUser.getUser().getId());
 		System.out.println("-------------------------------");
-		System.out.println("Users");
-		System.out.println("ID     From/To   Amount");
+		System.out.println("Transfers");
+		System.out.println(String.format("%-8s %-14s %-8s","ID","From/To","Amount"));
 		System.out.println("-------------------------------");
 
 		for(Transfer transfer :  transfers){
-			System.out.println(transfer.getId() +  "  " + transfer.getAccountFrom() + "/" + transfer.getAccountTo() + "  " + transfer.getAmount());
+
+			String fromUser = "From" + ":  " + userService.getUserById(currentUser, accountService.getAccountById(currentUser, transfer.getAccountFrom()).getUser_id()).getUsername();
+			String toUser = String.format("To: %-2s", userService.getUserById(currentUser, accountService.getAccountById(currentUser, transfer.getAccountTo()).getUser_id()).getUsername());
+
+
+			System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), fromUser, transfer.getAmount()));
+			System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), toUser, transfer.getAmount()));
 		}
 
 
 
-		int choiceId = console.getUserInputInteger("Please enter the Transfer ID to view details or a transfer, or input 0 to go back. ");
+		int choiceId = console.getUserInputInteger("Please enter the Transfer ID to view details or a transfer, or input 0 to go back");
 		Transfer choice = validateTransferIdChoice(choiceId, transfers, currentUser);
 		if (choice != null){
 			System.out.println("-------------------------------");
@@ -124,21 +132,21 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void sendBucks() {
 		User[] users = userService.getAllUsers(currentUser);
 		System.out.println("-------------------------------");
 		System.out.println("Users");
-		System.out.println("ID          Name");
+		System.out.println(String.format("%-8s %-14s","ID","Name"));
 		System.out.println("-------------------------------");
 
 		console.printUsersToDisplay(users);
 
-		int userChoice = console.getUserInputInteger("Please enter the ID of the person you want to send money to, or input 0 to cancel: ");
+		int userChoice = console.getUserInputInteger("Please enter the ID of the person you want to send money to, or input 0 to cancel");
 		if (validateUserChoice(userChoice, users, currentUser)){
-			String amnt = console.getUserInput("Enter ammount of funds to send: ");
+			String amnt = console.getUserInput("Enter amount of funds to send");
 			makeAtransfer(userChoice, amnt, "Send", "Approved");
 		}
 	}

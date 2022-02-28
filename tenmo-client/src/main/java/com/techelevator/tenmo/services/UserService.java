@@ -32,15 +32,16 @@ public class UserService {
 
     }
 
-    public User getUserByUserId(AuthenticatedUser authenticatedUser, int id){
+    public User getUserById(AuthenticatedUser authenticatedUser, int id){
         User user = null;
         try {
-            user = restTemplate.exchange(baseUrl + "users/" + id, HttpMethod.GET, createHttps(authenticatedUser), User.class).getBody();
+            user = restTemplate.exchange(baseUrl + "getUsers/" + id, HttpMethod.GET, createHttps(authenticatedUser), User.class).getBody();
         } catch (RestClientResponseException e){
             System.out.println("Could not complete: " + e.getRawStatusCode());
         } catch (ResourceAccessException e){
             System.out.println("Could not complete. Server network problem. Try again. ");
         }
+
         return user;
     }
 

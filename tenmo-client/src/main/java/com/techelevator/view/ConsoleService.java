@@ -80,7 +80,7 @@ ConsoleService {
 
 	public void printUsersToDisplay(User[] users) {
 		for(User user: users) {
-			out.println(user.getId() + "          " + user.getUsername());
+			out.println(String.format("%-8d %-14s",user.getId(),user.getUsername()));
 		}
 		out.println("-------------------------------");
 		out.flush();

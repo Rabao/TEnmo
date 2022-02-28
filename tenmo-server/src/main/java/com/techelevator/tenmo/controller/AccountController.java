@@ -44,6 +44,12 @@ public class AccountController {
         return userDao.findAll();
     }
 
+    @GetMapping(path = "/getUsers/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public User getUserById(@PathVariable int id){
+        return userDao.getUserById(id);
+    }
+
     @GetMapping(path = "/balance")
     @PreAuthorize("hasRole('USER')")
     public Double getBalance(Principal principal){
