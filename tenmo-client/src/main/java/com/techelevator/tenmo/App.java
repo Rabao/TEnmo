@@ -11,7 +11,7 @@ import com.techelevator.view.ConsoleService;
 /**
  * This is the main application class.
  *
- * @author Kadeam Howell, Jayden Southworth, Techelevator
+ * @author Jayden Southworth, Kadeam Howell, Techelevator
  *
  */
 public class App {
@@ -120,9 +120,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			} else {
 				System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), fromUser, transfer.getAmount()));
 			}
-
-//			System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), fromUser, transfer.getAmount()));
-//			System.out.println(String.format("%-8d %-14s $%,.2f", transfer.getId(), toUser, transfer.getAmount()));
 		}
 
 

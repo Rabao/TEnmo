@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Contains details necessary for interfacing with the User table.
+ */
+
 public class User {
 
    private Long id;
