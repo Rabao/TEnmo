@@ -1,11 +1,13 @@
 package com.techelevator.tenmo.model;
 
 /**
- * This model class contains details necessary for interfacing with the database's User table.
+ * This model class contains details necessary for storing data
+ * retrieved from the database User table.
  *
- * @author Jayden Southworth, Kadeam Howell
+ * @author Techelevator
  *
  */
+
 
 public class User {
 
@@ -32,7 +34,7 @@ public class User {
 	/**
 	 * This method retrieves and stores the user's ID when invoked.
 	 *
-	 * @Param id Sets the object's id property.
+	 * @Param id Sets the object's id property with passed-in data.
 	 *
 	 */
 	public void setId(Integer id) {
@@ -52,7 +54,7 @@ public class User {
 	/**
 	 * This method retrieves and stores the user's username when invoked.
 	 *
-	 * @Param username Sets the object's username property.
+	 * @Param username Sets the object's username property with passed-in data.
 	 *
 	 */
 	public void setUsername(String username) {

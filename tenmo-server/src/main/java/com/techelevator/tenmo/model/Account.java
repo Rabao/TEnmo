@@ -1,5 +1,12 @@
 package com.techelevator.tenmo.model;
 
+/**
+ * This model class contains details necessary for interfacing with the database's Account table.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 public class Account {
     private int account_id;
     private int user_id;

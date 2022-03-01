@@ -1,5 +1,13 @@
 package com.techelevator.tenmo.model;
 
+/**
+ * This model class contains details necessary for storing data
+ * retrieved from the database Transfer Statuses table.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 public class TransferStatus {
     private int transferStatusId;
     private String transferStatusDesc;

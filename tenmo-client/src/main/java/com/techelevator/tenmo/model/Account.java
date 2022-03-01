@@ -1,7 +1,8 @@
 package com.techelevator.tenmo.model;
 
 /**
- * This model class contains details necessary for interfacing with the database's Account table.
+ * This model class contains details necessary for storing data
+ * retrieved from the database Account table.
  *
  * @author Jayden Southworth, Kadeam Howell
  *
@@ -36,7 +37,7 @@ public class Account {
     /**
      * This method retrieves and stores the account ID when invoked.
      *
-     * @Param account_id Sets the object's account_id property.
+     * @Param account_id Sets the object's account_id property with passed-in data.
      *
      */
     public void setAccount_id(int account_id) { this.account_id = account_id; }
@@ -52,7 +53,7 @@ public class Account {
     /**
      * This method retrieves and stores the user ID when invoked.
      *
-     * @Param user_id Sets the object's user_id property.
+     * @Param user_id Sets the object's user_id property with passed-in data.
      *
      */
     public void setUser_id(int user_id) { this.user_id = user_id; }
@@ -68,7 +69,7 @@ public class Account {
     /**
      * This method retrieves and stores the account balance when invoked.
      *
-     * @Param balance Sets the object's balance property.
+     * @Param balance Sets the object's balance property with passed-in data.
      *
      */
     public void setBalance(double balance) { this.balance = balance; }

@@ -1,8 +1,23 @@
 package com.techelevator.tenmo.model;
 
+/**
+ * This model class contains properties necessary for storing a
+ * specified user's login credentials on registration for database input.
+ *
+ * @author Techelevator
+ *
+ */
+
 public class UserCredentials {
 
+    /**
+     * The property used to contain the user's username.
+     */
     private String username;
+
+    /**
+     * The property used to contain the user's password.
+     */
     private String password;
 
     public UserCredentials(String username, String password) {

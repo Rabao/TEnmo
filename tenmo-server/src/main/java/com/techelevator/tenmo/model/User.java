@@ -5,7 +5,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Contains details necessary for interfacing with the User table.
+ * This model class contains details necessary for interfacing with the database's User table.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
  */
 
 public class User {
