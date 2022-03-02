@@ -52,7 +52,7 @@ public class Transfer {
     /**
      * This method retrieves and stores the transfer record's ID.
      *
-     * @Param id Stores the passed in transfer record's ID.
+     * @param id Stores the passed in transfer record's ID.
      *
      */
     public void setId(int id) { this.id = id; }
@@ -68,7 +68,7 @@ public class Transfer {
     /**
      * This method retrieves and stores the transfer record's type ID.
      *
-     * @Param transferTypeId Stores the passed in transfer record's type ID.
+     * @param transferTypeId Stores the passed in transfer record's type ID.
      *
      */
     public void setTransferTypeId(int transferTypeId) { this.transferTypeId = transferTypeId; }
@@ -84,7 +84,7 @@ public class Transfer {
     /**
      * This method retrieves and stores the transfer record's status ID.
      *
-     * @Param transferStatusId Stores the passed in transfer record's status ID.
+     * @param transferStatusId Stores the passed in transfer record's status ID.
      *
      */
     public void setTransferStatusId(int transferStatusId) { this.transferStatusId = transferStatusId; }
@@ -100,7 +100,7 @@ public class Transfer {
     /**
      * This method retrieves and stores the transfer record's sender.
      *
-     * @Param accountFrom Stores the passed in transfer record's sending account.
+     * @param accountFrom Stores the passed in transfer record's sending account.
      *
      */
     public void setAccountFrom(int accountFrom) { this.accountFrom = accountFrom; }
@@ -116,7 +116,7 @@ public class Transfer {
     /**
      * This method retrieves and stores the transfer record's recipient.
      *
-     * @Param accountTo Stores the passed in transfer record's receiving account.
+     * @param accountTo Stores the passed in transfer record's receiving account.
      *
      */
     public void setAccountTo(int accountTo) { this.accountTo = accountTo; }
@@ -132,7 +132,7 @@ public class Transfer {
     /**
      * This method retrieves and stores the amount that was transferred.
      *
-     * @Param amount Stores the passed in transfer record's transfer amount.
+     * @param amount Stores the passed in transfer record's transfer amount.
      *
      */
     public void setAmount(double amount) { this.amount = amount; }

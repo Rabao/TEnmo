@@ -42,7 +42,7 @@ public class UserCredentials {
     /**
      * This method retrieves and stores the user's username when invoked.
      *
-     * @Param username Sets the object's username property with passed-in data.
+     * @param username Sets the object's username property with passed-in data.
      *
      */
     public void setUsername(String username) {
@@ -62,7 +62,7 @@ public class UserCredentials {
     /**
      * This method retrieves and stores the user's password when invoked.
      *
-     * @Param password Sets the object's password property with passed-in data.
+     * @param password Sets the object's password property with passed-in data.
      *
      */
     public void setPassword(String password) {

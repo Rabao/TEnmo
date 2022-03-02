@@ -34,7 +34,7 @@ public class User {
 	/**
 	 * This method retrieves and stores the user's ID when invoked.
 	 *
-	 * @Param id Sets the object's id property with passed-in data.
+	 * @param id Sets the object's id property with passed-in data.
 	 *
 	 */
 	public void setId(Integer id) {
@@ -54,7 +54,7 @@ public class User {
 	/**
 	 * This method retrieves and stores the user's username when invoked.
 	 *
-	 * @Param username Sets the object's username property with passed-in data.
+	 * @param username Sets the object's username property with passed-in data.
 	 *
 	 */
 	public void setUsername(String username) {

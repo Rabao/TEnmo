@@ -31,7 +31,7 @@ public class TransferType {
     /**
      * This method retrieves and stores the transfer's type ID.
      *
-     * @Param transferTypeId Stores the passed in transfer's type ID.
+     * @param transferTypeId Stores the passed in transfer's type ID.
      *
      */
     public void setTransferTypeId(int transferTypeId) { this.transferTypeId = transferTypeId; }
@@ -47,7 +47,7 @@ public class TransferType {
     /**
      * This method retrieves and stores the transfer's type description.
      *
-     * @Param transferTypeDescription Stores the passed in transfer's type description.
+     * @param transferTypeDescription Stores the passed in transfer's type description.
      *
      */
     public void setTransferTypeDescription(String transferTypeDescription) { this.transferTypeDescription = transferTypeDescription; }

@@ -15,14 +15,33 @@ import org.springframework.web.client.RestTemplate;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
 
+/**
+ * This class's APIs contain details necessary for retrieving
+ * data from the Account table and securely passing it to the View.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 public class AuthenticationService {
 
+	/**
+	 * This property is used to store the server's URL.
+	 */
     private String baseUrl;
+
+	/**
+	 * This property is used to access REST APIs using a template object.
+	 */
     private RestTemplate restTemplate = new RestTemplate();
 
+	/**
+	 * This constructor is used to pass the server's URL to subsequent APIs.
+	 */
     public AuthenticationService(String url) {
         this.baseUrl = url;
     }
+
 
     public AuthenticatedUser login(UserCredentials credentials) throws AuthenticationServiceException {
         HttpEntity<UserCredentials> entity = createRequestEntity(credentials);

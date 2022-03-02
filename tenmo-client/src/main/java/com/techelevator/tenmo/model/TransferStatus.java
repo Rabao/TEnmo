@@ -31,7 +31,7 @@ public class TransferStatus {
     /**
      * This method retrieves and stores the transfer's status ID.
      *
-     * @Param transferStatusId Stores the passed in transfer's status ID.
+     * @param transferStatusId Stores the passed in transfer's status ID.
      *
      */
     public void setTransferStatusId(int transferStatusId) { this.transferStatusId = transferStatusId; }
@@ -47,7 +47,7 @@ public class TransferStatus {
     /**
      * This method retrieves and stores the transfer's status description.
      *
-     * @Param transferStatusDesc Stores the passed in transfer's status description.
+     * @param transferStatusDesc Stores the passed in transfer's status description.
      *
      */
     public void setTransferStatusDesc(String transferStatusDesc) { this.transferStatusDesc = transferStatusDesc; }

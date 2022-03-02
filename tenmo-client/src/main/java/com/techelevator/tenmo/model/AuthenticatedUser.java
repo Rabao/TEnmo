@@ -33,7 +33,7 @@ public class AuthenticatedUser {
 	/**
 	 * This method retrieves and stores the authenticated user's token.
 	 *
-	 * @Param token Stores the passed in authenticated user's token in a string.
+	 * @param token Stores the passed in authenticated user's token in a string.
 	 *
 	 */
 	public void setToken(String token) {
@@ -54,7 +54,7 @@ public class AuthenticatedUser {
 	 * This method retrieves and stores the authenticated user's
 	 * object when invoked.
 	 *
-	 * @Param user Stores the passed in authenticated user's properties in a User object.
+	 * @param user Stores the passed in authenticated user's properties in a User object.
 	 *
 	 */
 	public void setUser(User user) {
