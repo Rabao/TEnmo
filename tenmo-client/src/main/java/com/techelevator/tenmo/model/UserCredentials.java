@@ -20,23 +20,51 @@ public class UserCredentials {
      */
     private String password;
 
+    /**
+     * This constructor takes login credentials passed into it
+     * and stores them in a UserCredentials object.
+     */
     public UserCredentials(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
 
+    /**
+     * This method returns the user's username when invoked.
+     *
+     * @return the user's username stored within the object's username property.
+     *
+     */
 	public String getUsername() {
         return username;
     }
 
+    /**
+     * This method retrieves and stores the user's username when invoked.
+     *
+     * @Param username Sets the object's username property with passed-in data.
+     *
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * This method returns the user's password when invoked.
+     *
+     * @return the user's password stored within the object's password property.
+     *
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * This method retrieves and stores the user's password when invoked.
+     *
+     * @Param password Sets the object's password property with passed-in data.
+     *
+     */
     public void setPassword(String password) {
         this.password = password;
     }
