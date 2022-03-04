@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * This class's APIs contain details necessary for retrieving
- * data from the Account table and securely passing it to the View.
+ * data from the User table and securely passing it to the View.
  *
  * @author Jayden Southworth, Kadeam Howell
  *

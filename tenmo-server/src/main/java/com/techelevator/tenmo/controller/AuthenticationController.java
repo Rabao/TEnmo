@@ -22,7 +22,10 @@ import com.techelevator.tenmo.security.jwt.TokenProvider;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * Controller to authenticate users.
+ * This is the web API controller class used to authenticate users.
+ *
+ * @author Techelevator
+ *
  */
 @RestController
 public class AuthenticationController {
