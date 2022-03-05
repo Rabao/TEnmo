@@ -199,6 +199,7 @@ public class TransferService {
         headers.setBearerAuth(authenticatedUser.getToken());
         HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
 
+
         try {
             restTemplate.exchange(baseUrl + "transfer/" + transfer.getId(), HttpMethod.PUT, entity, Transfer.class);
         } catch (RestClientResponseException e) {

@@ -64,9 +64,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	public void run() {
-		System.out.println("*********************");
-		System.out.println("* Welcome to TEnmo! *");
-		System.out.println("*********************");
+		System.out.println("*************************");
+		System.out.println("* Welcome to J&K TEnmo! *");
+		System.out.println("*************************");
 		
 		registerAndLogin();
 		mainMenu();

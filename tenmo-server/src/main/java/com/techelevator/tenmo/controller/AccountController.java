@@ -146,7 +146,6 @@ public class AccountController {
     @PutMapping(path = "/transfer/{id}")
     @PreAuthorize("#username == authentication.principal.username")
     public void changeTransStatus(Principal principal, @RequestBody @Valid Transfer trans, @PathVariable int id ) throws BadFunds, WrongPrincipalApproved {
-
         if(trans.getTransferStatusId() == transferStatusDao.getTransStatusByDesc("Approved").getTransferStatusId()) {
             double transAmount = trans.getAmount();
             Account sender = accountDao.getAccountByAccountID(trans.getAccountFrom());
