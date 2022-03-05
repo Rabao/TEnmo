@@ -1,5 +1,13 @@
 package com.techelevator.tenmo.dao;
 
+/**
+ * This interface defines common functionality needed
+ * to retrieve accounts and their balances.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 import com.techelevator.tenmo.model.Account;
 
 import java.util.List;
