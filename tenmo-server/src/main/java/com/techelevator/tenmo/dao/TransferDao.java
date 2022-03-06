@@ -4,6 +4,14 @@ import com.techelevator.tenmo.model.Transfer;
 
 import java.util.List;
 
+/**
+ * This interface defines common functionality needed
+ * to retrieve transfers.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 public interface TransferDao {
   List<Transfer> getAllTransfers();
 

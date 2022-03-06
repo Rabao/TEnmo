@@ -8,17 +8,34 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 
+/**
+ * This class implements the common functionality needed
+ * to retrieve user accounts from the database.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 @Component
 public class JdbcAccountDao implements AccountDao{
 
+    /**
+     * This property and constructor are used to initialize
+     * and wire the JdbcTemplate.
+     */
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     public JdbcAccountDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
+    /**
+     * This API returns an account's balance based on the username.
+     *
+     * @param username  Retrieves a passed-in Username.
+     * @return User's account balance.
+     *
+     */
     @Override
     public double getBalance(String username) {
         double bal = 0;
@@ -30,6 +47,13 @@ public class JdbcAccountDao implements AccountDao{
         return bal;
     }
 
+    /**
+     * This API returns an account based on the specified User ID.
+     *
+     * @param userId Retrieves a passed-in User's ID.
+     * @return account specified by user's ID.
+     *
+     */
     @Override
     public Account getAccountByUserID(int userId) {
         Account account = null;
@@ -41,6 +65,13 @@ public class JdbcAccountDao implements AccountDao{
         return account;
     }
 
+    /**
+     * This API returns an account based on the specified account ID.
+     *
+     * @param accId  Retrieves a passed-in account ID.
+     * @return account specified by account ID.
+     *
+     */
     @Override
     public Account getAccountByAccountID(int accId) {
         Account account = null;
@@ -53,6 +84,13 @@ public class JdbcAccountDao implements AccountDao{
 
     }
 
+    /**
+     * This API selects and updates an account balance based on the account's ID.
+     *
+     * @param acc Retrieves a passed-in account object.
+     * @return True if an update was successfully made.
+     *
+     */
     @Override
     public boolean changeAccount(Account acc) {
         String sql = "update accounts set balance = ? where account_id = ?;";
@@ -64,7 +102,14 @@ public class JdbcAccountDao implements AccountDao{
         }
     }
 
-
+    /**
+     * This method takes and deserializes a SQL row
+     * from the Account and/ or Users tables, then returns
+     * account details.
+     *
+     * @return user account details.
+     *
+     */
     private Account mapRowToAccount(SqlRowSet rs) {
         Account account = new Account();
         account.setAccount_id(rs.getInt("account_id"));

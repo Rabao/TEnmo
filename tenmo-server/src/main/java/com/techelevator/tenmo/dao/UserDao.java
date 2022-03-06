@@ -4,6 +4,14 @@ import com.techelevator.tenmo.model.User;
 
 import java.util.List;
 
+/**
+ * This interface defines common functionality needed
+ * to retrieve user credentials.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 public interface UserDao {
 
     List<User> findAll();

@@ -2,6 +2,7 @@ package com.techelevator.tenmo.controller;
 
 import javax.validation.Valid;
 
+import com.techelevator.tenmo.exceptions.BadFunds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,11 +31,23 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class AuthenticationController {
 
+    /**
+     * These properties instantiate the Initializing Bean and
+     * Spring's authentication manager builder.
+     *
+     */
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    /**
+     * This property initializes and wires the User
+     * Data Access Objects to the database using
+     * Spring Autowire annotation.
+     *
+     */
     @Autowired
     private UserDao userDao;
+
 
     public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserDao userDao) {
         this.tokenProvider = tokenProvider;
@@ -42,6 +55,15 @@ public class AuthenticationController {
         this.userDao = userDao;
     }
 
+    /**
+     * This API maps to the /login endpoint, provides and then authenticates
+     * the token for the requesting User.
+     *
+     * @param loginDto Retrieves login credentials from user input.
+     *
+     * @return authentication token and username.
+     *
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponse login(@Valid @RequestBody LoginDTO loginDto) {
 
@@ -57,6 +79,13 @@ public class AuthenticationController {
         return new LoginResponse(jwt, user);
     }
 
+    /**
+     * This API maps to the /register endpoint, and POSTs non-existing
+     * User credentials to the Users table.
+     *
+     * @param newUser Retrieves login credentials from user input.
+     *
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void register(@Valid @RequestBody RegisterUserDTO newUser) {

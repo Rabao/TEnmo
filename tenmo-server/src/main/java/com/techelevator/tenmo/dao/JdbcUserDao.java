@@ -1,5 +1,14 @@
 package com.techelevator.tenmo.dao;
 
+
+/**
+ * This class implements the common functionality needed
+ * to retrieve user credentials from the database.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -17,15 +26,29 @@ import java.util.List;
 @Component
 public class JdbcUserDao implements UserDao {
 
+    /**
+     * The property used to initialize the starting balance.
+     */
     private static final BigDecimal STARTING_BALANCE = new BigDecimal("1000.00");
 
+    /**
+     * This property and constructor are used to initialize
+     * and wire the JdbcTemplate.
+     */
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     public JdbcUserDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     *  This API returns the User's ID from the database
+     *  using the passed-in username.
+     *
+     * @param username Retrieves passed-in username.
+     * @return user's ID.
+     *
+     */
     @Override
     public int findIdByUsername(String username) {
         String sql = "SELECT user_id FROM users WHERE username ILIKE ?;";
@@ -37,6 +60,12 @@ public class JdbcUserDao implements UserDao {
     }
     }
 
+    /**
+     *  This API returns a list of all Users from the database.
+     *
+     * @return all Users.
+     *
+     */
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
@@ -49,6 +78,14 @@ public class JdbcUserDao implements UserDao {
         return users;
     }
 
+    /**
+     *  This API returns the User from the database
+     *  using the passed-in username.
+     *
+     * @param username Retrieves passed-in username.
+     * @return User object.
+     *
+     */
     @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
         String sql = "SELECT user_id, username, password_hash FROM users WHERE username ILIKE ?;";
@@ -59,6 +96,16 @@ public class JdbcUserDao implements UserDao {
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
 
+    /**
+     *  This API POSTs a User's credentials to the database,
+     *  then assigns the user a new account.
+     *
+     * @param username Retrieves passed-in username.
+     * @param password Retrieves passed-in password.
+     *
+     * @return true if a User and their account are created.
+     *
+     */
     @Override
     public boolean create(String username, String password) {
 
@@ -87,6 +134,15 @@ public class JdbcUserDao implements UserDao {
         return true;
     }
 
+    /**
+     *  This API returns the User from the database
+     *  using the passed-in ID.
+     *
+     * @param id Retrieves a passed-in integer value for the ID.
+     *
+     * @return a User object containing the passed-in ID.
+     *
+     */
     @Override
     public User getUserById(int id) {
         String sql = "SELECT user_id, username FROM users WHERE user_id = ?";
@@ -100,6 +156,15 @@ public class JdbcUserDao implements UserDao {
         return user;
     }
 
+
+    /**
+     * This method takes and deserializes a SQL row
+     * from the Users tables, activates the user,
+     * sets the Role, and then returns account details.
+     *
+     * @return user account details.
+     *
+     */
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getLong("user_id"));

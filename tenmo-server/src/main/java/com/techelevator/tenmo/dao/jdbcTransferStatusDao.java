@@ -8,17 +8,37 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 
+/**
+ * This class implements the common functionality needed
+ * to retrieve transfer statuses from the database.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 @Component
 public class jdbcTransferStatusDao implements TransferStatusDao{
 
+    /**
+     * This property and constructor are used to initialize
+     * and wire the JdbcTemplate.
+     */
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     public void jdbcTransferTypeDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
+    /**
+     *  This API returns the Transfer Status from the database
+     *  based on the passed-in description.
+     *
+     * @param desc The passed-in transfer status description.
+     *
+     * @return a TransferStatus from the database.
+     *
+     */
     @Override
     public TransferStatus getTransStatusByDesc(String desc) {
         TransferStatus transferStatus = null;
@@ -34,6 +54,15 @@ public class jdbcTransferStatusDao implements TransferStatusDao{
         return transferStatus;
     }
 
+    /**
+     *  This API returns the Transfer Status from the database
+     *  based on the passed-in ID.
+     *
+     * @param transStatusId The passed-in transfer status ID.
+     *
+     * @return a TransferStatus from the database.
+     *
+     */
     @Override
     public TransferStatus getTransferByStatusId(int transStatusId) {
         TransferStatus transferStatus = null;

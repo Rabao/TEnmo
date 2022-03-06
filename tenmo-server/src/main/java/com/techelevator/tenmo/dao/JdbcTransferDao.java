@@ -10,17 +10,33 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the common functionality needed
+ * to retrieve transfers from the database.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 @Component
 public class JdbcTransferDao implements TransferDao {
 
+    /**
+     * This property and constructor are used to initialize
+     * and wire the JdbcTemplate.
+     */
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     public void jdbcTransferTypeDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
+    /**
+     *  This API returns a list of all transfers from the database.
+     *
+     * @return all transfers.
+     *
+     */
     @Override
     public List<Transfer> getAllTransfers() {
         List<Transfer> transfers = new ArrayList<>();
@@ -33,6 +49,14 @@ public class JdbcTransferDao implements TransferDao {
         return transfers;
     }
 
+    /**
+     *  This API returns a list of transfers associated
+     *  with a specific User ID.
+     *
+     * @param userId Retrieves a passed-in User ID.
+     * @return all transfers associated with a User ID.
+     *
+     */
     @Override
     public List<Transfer> getTransfersByUserId(int userId) {
         List<Transfer> transfers = new ArrayList<>();
@@ -44,6 +68,14 @@ public class JdbcTransferDao implements TransferDao {
         return transfers;
     }
 
+    /**
+     *  This API returns a transfer associated
+     *  with a specific transfer ID.
+     *
+     * @param transId Retrieves a passed-in transfer ID.
+     * @return all transfers associated with a transfer ID.
+     *
+     */
     @Override
     public Transfer getTransferByTransId(int transId) {
         Transfer trans = null;
@@ -55,6 +87,14 @@ public class JdbcTransferDao implements TransferDao {
         return trans;
     }
 
+    /**
+     *  This API returns a list of pending transfers associated
+     *  with a specific User ID.
+     *
+     * @param userId Retrieves a passed-in user ID.
+     * @return all pending transfers associated with a specified User ID.
+     *
+     */
     @Override
     public List<Transfer> getPendingTransfers(int userId) {
         List<Transfer> transfers = new ArrayList<>();
@@ -68,6 +108,14 @@ public class JdbcTransferDao implements TransferDao {
         return transfers;
     }
 
+    /**
+     *  This API POSTs a new Transfer o new transfer object to the database
+     *  and then returns True if procedure is successful.
+     *
+     * @param trans Retrieves a passed-in Transfer object.
+     * @return true if new transfer is successfully created.
+     *
+     */
     @Override
     public boolean createTransfer(Transfer trans) {
         String sql = "insert into transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) values (?, ?, ?, ?, ?);";
@@ -81,6 +129,13 @@ public class JdbcTransferDao implements TransferDao {
         }
     }
 
+    /**
+     *  This API updates a transfer to the transfer details passed by paramter transfer.
+     *
+     * @param transfer  Retrieves a passed-in Transfer object.
+     * @return true if new transfer is successfully created.
+     *
+     */
     @Override
     public boolean changeTransfer(Transfer transfer) {
         String sql = "update transfers set transfer_status_id = ? where transfer_id = ?; ";
@@ -92,7 +147,14 @@ public class JdbcTransferDao implements TransferDao {
         }
     }
 
-
+    /**
+     * This method takes and deserializes a SQL row
+     * from the Account and/ or related Transfer tables, then returns
+     * transfer details.
+     *
+     * @return user transfer details.
+     *
+     */
     private Transfer mapRowToTransfer(SqlRowSet rs){
         Transfer transfer = new Transfer();
         transfer.setId(rs.getInt("transfer_id"));
