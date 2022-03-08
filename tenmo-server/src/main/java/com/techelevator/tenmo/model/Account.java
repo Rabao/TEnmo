@@ -1,7 +1,7 @@
 package com.techelevator.tenmo.model;
 
 /**
- * This model class contains details necessary for interfacing with the database's Account table.
+ * This DTO contains details necessary for interfacing with the database's Account table.
  *
  * @author Jayden Southworth, Kadeam Howell
  *

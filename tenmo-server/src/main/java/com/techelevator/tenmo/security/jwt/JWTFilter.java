@@ -17,6 +17,8 @@ import java.io.IOException;
 /**
  * Filters incoming requests and installs a Spring Security principal if a header corresponding to a valid user is
  * found.
+ *
+ * @author Techelevator
  */
 public class JWTFilter extends GenericFilterBean {
 

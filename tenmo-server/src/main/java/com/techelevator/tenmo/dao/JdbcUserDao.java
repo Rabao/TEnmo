@@ -5,7 +5,7 @@ package com.techelevator.tenmo.dao;
  * This class implements the common functionality needed
  * to retrieve user credentials from the database.
  *
- * @author Jayden Southworth, Kadeam Howell
+ * @author Techelevator, Jayden Southworth, Kadeam Howell
  *
  */
 

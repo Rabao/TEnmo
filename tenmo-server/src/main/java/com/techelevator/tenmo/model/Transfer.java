@@ -3,6 +3,13 @@ package com.techelevator.tenmo.model;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * This DTO contains details necessary for interfacing with the database's Transfer table.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 public class Transfer {
 
 

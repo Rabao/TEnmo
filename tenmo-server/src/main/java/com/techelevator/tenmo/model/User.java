@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * This model class contains details necessary for interfacing with the database's User table.
+ * This DTO contains details necessary for interfacing with the database's User table.
  *
  * @author Jayden Southworth, Kadeam Howell
  *
@@ -68,6 +68,14 @@ public class User {
       this.authorities = authorities;
    }
 
+   /**
+    * This method takes a comma-delimited String of roles,
+    * splits them apart, adds them to a list, and then appends
+    * 'ROLE_' to each item in the list.
+    *
+    * @param authorities Retrieves a serialized list String of authorities.
+    *
+    */
    public void setAuthorities(String authorities) {
       String[] roles = authorities.split(",");
       for(String role : roles) {
@@ -75,6 +83,14 @@ public class User {
       }
    }
 
+   /**
+    * This method overrides the equals() method,
+    * and checks the passed-in object to see if it's
+    * a valid object.
+    *
+    * @return returns True or False depending on whether the object is valid.
+    *
+    */
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;
@@ -87,11 +103,25 @@ public class User {
               Objects.equals(authorities, user.authorities);
    }
 
+   /**
+    * This method overrides the hashCode() method,
+    * and hashes the User's details.
+    *
+    * @return returns a hashed object containing User details.
+    *
+    */
    @Override
    public int hashCode() {
       return Objects.hash(id, username, password, activated, authorities);
    }
 
+   /**
+    * This method overrides the toString() method when called from the
+    * User DTO.
+    *
+    * @return returns serialized User details.
+    *
+    */
    @Override
    public String toString() {
       return "User{" +

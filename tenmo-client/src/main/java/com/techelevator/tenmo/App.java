@@ -16,8 +16,11 @@ import com.techelevator.view.ConsoleService;
  */
 public class App {
 
-private static final String API_BASE_URL = "http://localhost:8080/";
-    
+	/**
+	 * The below static fields contain Menu options.
+	 *
+	 */
+	private static final String API_BASE_URL = "http://localhost:8080/";
     private static final String MENU_OPTION_EXIT = "Exit";
     private static final String LOGIN_MENU_OPTION_REGISTER = "Register";
 	private static final String LOGIN_MENU_OPTION_LOGIN = "Login";
@@ -29,11 +32,19 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private static final String MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS = "View your pending requests";
 	private static final String MAIN_MENU_OPTION_LOGIN = "Login as different user";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_VIEW_BALANCE, MAIN_MENU_OPTION_SEND_BUCKS, MAIN_MENU_OPTION_VIEW_PAST_TRANSFERS, MAIN_MENU_OPTION_REQUEST_BUCKS, MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS, MAIN_MENU_OPTION_LOGIN, MENU_OPTION_EXIT };
-	
+
+	/**
+	 * Declares the AuthenticatedUser object.
+	 *
+	 */
     private AuthenticatedUser currentUser;
+
+	/**
+	 * Declares the services.
+	 *
+	 */
     private ConsoleService console;
     private AuthenticationService authenticationService;
-
 	private AccountService accountService;
 	private UserService userService;
 	private TransferTypeService transferTypeService;
@@ -41,6 +52,13 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private TransferService transferService;
 
 
+	/**
+	 * The main initializes our App, the User object and services,
+	 * then tells the app to run with a new instance of all services.
+	 *
+	 * @param args Contains the supplied command-line arguments as an array of String objects.
+	 *
+	 */
     public static void main(String[] args) {
     	App app = new App(
 				new ConsoleService(System.in, System.out),
@@ -53,6 +71,17 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     	app.run();
     }
 
+	/**
+	 * This constructor initializes the below parameters.
+	 *
+	 * @param console Initializes the console service.
+	 * @param authenticationService Initializes the authentication service.
+	 * @param accountService Initializes the account service.
+	 * @param userService Initializes the user service.
+	 * @param transferTypeService Initializes the transfer type service.
+	 * @param transferStatusService Initializes the transfer status service.
+	 * @param transferService Initializes the transfer service.
+	 */
     public App(ConsoleService console, AuthenticationService authenticationService, AccountService accountService, UserService userService, TransferTypeService transferTypeService, TransferStatusService transferStatusService, TransferService transferService) {
 		this.console = console;
 		this.authenticationService = authenticationService;
@@ -63,6 +92,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		this.transferService = transferService;
 	}
 
+
+	/**
+	 * The run method starts the application.
+	 *
+	 */
 	public void run() {
 		System.out.println("*************************");
 		System.out.println("* Welcome to J&K TEnmo! *");
@@ -72,6 +106,10 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		mainMenu();
 	}
 
+	/**
+	 * This method displays the main menu.
+	 *
+	 */
 	private void mainMenu() {
 		while(true) {
 			String choice = (String)console.getChoiceFromOptions(MAIN_MENU_OPTIONS);
@@ -94,11 +132,21 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		}
 	}
 
+	/**
+	 * This method retrieves the current user's balance from the
+	 * account service and prints it to the terminal.
+	 *
+	 */
 	private void viewCurrentBalance() {
 		Double bal = accountService.getBalance(currentUser);
 		System.out.println("Your current account balance is:  $" + bal.toString());
 	}
 
+	/**
+	 * This method retrieves the current user's transfer
+	 * history, and prints it to the terminal.
+	 *
+	 */
 	private void viewTransferHistory() {
 
 		Transfer[] transfers = transferService.getTransfersFromUserId(currentUser, currentUser.getUser().getId());
@@ -132,8 +180,17 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	}
 
+	/**
+	 * This method retrieves the current user's pending
+	 * transfer requests, and prints it to the terminal.
+	 * It then takes user input, determining whether
+	 * to accept or reject a pending request based on the
+	 * selected transfer's ID.
+	 *
+	 */
 	private void viewPendingRequests() {
 		Transfer[] transfers = transferService.getPendingTransfersByUserId(currentUser, currentUser.getUser().getId());
+		int transStatusId;
 		System.out.println("-------------------------------");
 		System.out.println("Pending Transactions");
 		System.out.println(String.format("%-8s %-14s %-8s","ID","From/To","Amount"));
@@ -157,10 +214,10 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			int selection = console.getUserInputInteger("Input option ");
 			if(selection != 0){
 				if(selection == 1){
-					int transStatusId = transferStatusService.getTransferStatusByDesc(currentUser, "Approved").getTransferStatusId();
+					transStatusId = transferStatusService.getTransferStatusByDesc(currentUser, "Approved").getTransferStatusId();
 					choice.setTransferStatusId(transStatusId);
 				} else if( selection == 2){
-					int transStatusId = transferStatusService.getTransferStatusByDesc(currentUser, "Rejected").getTransferStatusId();
+					transStatusId = transferStatusService.getTransferStatusByDesc(currentUser, "Rejected").getTransferStatusId();
 					choice.setTransferStatusId(transStatusId);
 				} else {
 					System.out.println("Invalid input. ");
@@ -169,6 +226,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		}
 	}
 
+	/**
+	 * This method removes the specified amount from the current user's
+	 * account, then adds the funds to a specified user's account.
+	 *
+	 */
 	private void sendBucks() {
 		User[] users = userService.getAllUsers(currentUser);
 		System.out.println("-------------------------------");
@@ -185,6 +247,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		}
 	}
 
+	/**
+	 * This method uses the makeATransfer method to send a
+	 * request for funds to the specified user.
+	 *
+	 */
 	private void requestBucks() {
 		User[] users = userService.getAllUsers(currentUser);
 		System.out.println("-------------------------------");
@@ -202,11 +269,20 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 		
 	}
-	
+
+	/**
+	 * Exits the program when called.
+	 *
+	 */
 	private void exitProgram() {
 		System.exit(0);
 	}
 
+	/**
+	 * This method removes the specified amount from the current user's
+	 * account, then adds the funds to a specified user's account.
+	 *
+	 */
 	private Transfer makeAtransfer(int accountSenderuserId, String amntStr, String transferType, String status){
 		int transferTypeId = transferTypeService.getTransferType(currentUser, transferType).getTransferTypeId();
 		int transferStatusId = transferStatusService.getTransferStatusByDesc(currentUser, status).getTransferStatusId();
@@ -235,6 +311,20 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		return transfer;
 	}
 
+	/**
+	 * This method validates the User's choice by retrieving all transfers
+	 * and then matching their IDs against the input. It then returns
+	 * the user's validated choice of transfer target.
+	 *
+	 * @param choice Retrieves the user's transfer ID input.
+	 * @param transfers Retrieves all transfers.
+	 * @param authenticatedUser Retrieves the current user's instance.
+	 *
+	 * @throws InvalidTransferIdChoice if User's input is not a valid transfer ID.
+	 *
+	 * @return the validated transfer ID choice.
+	 *
+	 */
 	private Transfer validateTransferIdChoice(int choice, Transfer[] transfers, AuthenticatedUser authenticatedUser){
 		Transfer choiceToValidate = null;
 		if(choice != 0){
@@ -257,6 +347,20 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		return choiceToValidate;
 	}
 
+	/**
+	 * This method validates the User's choice by retrieving all transfers
+	 * and then matching their IDs against the input. It then returns
+	 * the user's validated choice of transfer target.
+	 *
+	 * @param userIdChoice Retrieves the passed-in User ID.
+	 * @param users Retrieves a list of all Users.
+	 * @param currentUser Retrieves the current user's instance.
+	 *
+	 * @throws UserNotFoundException if the specified User is not found.
+	 *
+	 * @return the validated User ID choice.
+	 *
+	 */
 	private boolean validateUserChoice(int userIdChoice, User[] users, AuthenticatedUser currentUser) {
 		if(userIdChoice != 0) {
 			try {
@@ -282,6 +386,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		return false;
 	}
 
+	/**
+	 * This method prints the login menu options, and
+	 * calls the appropriate menu item based on the User's choice.
+	 *
+	 */
 	private void registerAndLogin() {
 		while(!isAuthenticated()) {
 			String choice = (String)console.getChoiceFromOptions(LOGIN_MENU_OPTIONS);
@@ -296,10 +405,22 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		}
 	}
 
+	/**
+	 * Checks to see if the current user's authentication status
+	 * is valid.
+	 *
+	 * @return the current user's authentication status.
+	 *
+	 */
 	private boolean isAuthenticated() {
 		return currentUser != null;
 	}
 
+	/**
+	 * This method handles User registration, and checks to see
+	 * that user credentials don't already exist in the database.
+	 *
+	 */
 	private void register() {
 		System.out.println("Please register a new user account");
 		boolean isRegistered = false;
@@ -317,6 +438,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
         }
 	}
 
+	/**
+	 * This method handles User login, and makes sure
+	 * there isn't a current User logged in.
+	 *
+	 */
 	private void login() {
 		System.out.println("Please log in");
 		currentUser = null;
@@ -332,6 +458,12 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		}
 	}
 
+	/**
+	 *	This method prints formatted Transfer details.
+	 *
+	 * @param transfer Retrieves the specified transfer.
+	 *
+	 */
 	private void printTransferDetails(Transfer transfer){
 		System.out.println("-------------------------------");
 		System.out.println("Transfer Details");
@@ -343,7 +475,13 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		System.out.println("Status: " + transfer.getTransferStatusId());
 		System.out.println("Amount $: " + transfer.getAmount());
 	}
-	
+
+	/**
+	 *	This method collects and stores User Credentials on login.
+	 *
+	 * @return returns a new UserCredentials object containing the user's credentials.
+	 *
+	 */
 	private UserCredentials collectUserCredentials() {
 		String username = console.getUserInput("Username");
 		String password = console.getUserInput("Password");

@@ -37,6 +37,8 @@ public class AuthenticationService {
 
 	/**
 	 * This constructor is used to pass the server's URL to subsequent APIs.
+	 *
+	 * @param url Retrieves the API base URL.
 	 */
     public AuthenticationService(String url) {
         this.baseUrl = url;

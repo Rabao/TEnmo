@@ -36,6 +36,8 @@ public class AccountService {
     /**
      * This constructor is used to initialize the REST template and
      * pass the server's URL and the specified endpoint to subsequent APIs.
+     *
+     * @param baseUrl Retrieves the API base Url.
      */
     public AccountService(String baseUrl) {
         this.restTemplate = new RestTemplate();

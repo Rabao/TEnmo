@@ -33,6 +33,9 @@ public class UserService {
     /**
      * This constructor is used to initialize the REST template and
      * pass the server's URL and the specified endpoint to subsequent APIs.
+     *
+     * @param baseUrl Retrieves the API base Url.
+     *
      */
     public UserService(String baseUrl) {
         this.restTemplate = new RestTemplate();

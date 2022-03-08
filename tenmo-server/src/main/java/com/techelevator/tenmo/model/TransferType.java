@@ -1,5 +1,12 @@
 package com.techelevator.tenmo.model;
 
+/**
+ * This DTO contains details necessary for interfacing with the database's TransferType table.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 public class TransferType {
     private int transferTypeId;
     private String transferDesc;

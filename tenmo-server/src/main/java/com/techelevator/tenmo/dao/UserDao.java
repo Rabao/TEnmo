@@ -8,7 +8,7 @@ import java.util.List;
  * This interface defines common functionality needed
  * to retrieve user credentials.
  *
- * @author Jayden Southworth, Kadeam Howell
+ * @author Techelevator, Jayden Southworth, Kadeam Howell
  *
  */
 

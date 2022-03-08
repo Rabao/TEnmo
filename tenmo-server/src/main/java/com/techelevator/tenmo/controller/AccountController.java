@@ -70,8 +70,9 @@ public class AccountController {
      * returns the specified User via its User ID
      * to an authenticated user.
      *
+     * @param id Retrieves the User's user ID.
+     *
      * @return Users by their user ID.
-     * @param id @PathVariable Retrieves the User's user ID.
      */
     @GetMapping(path = "/getUsers/{id}")
     @PreAuthorize("hasRole('USER')")
@@ -296,7 +297,7 @@ public class AccountController {
      */
     @PutMapping(path = "/transfer/{id}")
     @PreAuthorize("#username == authentication.principal.username")
-    public void changeTransStatus(Principal principal, @RequestBody @Valid Transfer trans, @PathVariable int id ) throws BadFunds, WrongPrincipalApproved {
+    public void changeTransStatus(Principal principal, @RequestBody @Valid Transfer trans, @PathVariable int id ) throws BadFunds {
         if(trans.getTransferStatusId() == transferStatusDao.getTransStatusByDesc("Approved").getTransferStatusId()) {
             double transAmount = trans.getAmount();
             Account sender = accountDao.getAccountByAccountID(trans.getAccountFrom());

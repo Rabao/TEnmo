@@ -23,6 +23,10 @@ public class UserCredentials {
     /**
      * This constructor takes login credentials passed into it
      * and stores them in a UserCredentials object.
+     *
+     * @param username Retrieves and stores the User's username.
+     * @param password Retrieves and stores the User's password.
+     *
      */
     public UserCredentials(String username, String password) {
 		this.username = username;

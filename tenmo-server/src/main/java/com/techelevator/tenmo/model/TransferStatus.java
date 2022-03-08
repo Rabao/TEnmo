@@ -1,5 +1,12 @@
 package com.techelevator.tenmo.model;
 
+/**
+ * This DTO contains details necessary for interfacing with the database's TransferStatus table.
+ *
+ * @author Jayden Southworth, Kadeam Howell
+ *
+ */
+
 public class TransferStatus {
     private int transferStatusId;
     private String transferStatusDesc;

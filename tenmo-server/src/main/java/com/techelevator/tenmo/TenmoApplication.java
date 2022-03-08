@@ -15,6 +15,9 @@ public class TenmoApplication {
 
     /**
      * This main method uses the SpringApplication class to bootstrap and launch the Application.
+     *
+     * @param args Contains the supplied command-line arguments as an array of String objects.
+     *
      */
 
     public static void main(String[] args) {

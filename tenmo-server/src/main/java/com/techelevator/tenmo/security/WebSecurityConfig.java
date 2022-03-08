@@ -35,6 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.userModelDetailsService = userModelDetailsService;
     }
 
+    /**
+     * Encodes passwords.
+     * @return an encoded password.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -42,7 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configure paths and requests that should be ignored by Spring Security
-     * @param web
+     *
+     * @param web Declares a WebSecurity object to configure URL path permissions.
      */
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
@@ -50,8 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configure com.techelevator.auctions.security settings
-     * @param httpSecurity
-     * @throws Exception
+     *
+     * @param httpSecurity Declares a HttpSecurity object to configure web based security for specific http requests.
+     *
+     * @throws Exception throws an Exception for any possible errors.
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {

@@ -2,6 +2,8 @@ package com.techelevator.tenmo.model;
 
 /**
  * DTO for storing a user's credentials.
+ *
+ * @author Techelevator
  */
 public class LoginDTO {
 
@@ -24,6 +26,13 @@ public class LoginDTO {
       this.password = password;
    }
 
+    /**
+    * This method overrides the toString() method when called from the
+    * Login DTO.
+    *
+    * @return returns serialized User credentials.
+    *
+    */
    @Override
    public String toString() {
       return "LoginDTO{" +
