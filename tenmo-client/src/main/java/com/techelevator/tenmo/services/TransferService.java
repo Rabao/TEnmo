@@ -189,8 +189,6 @@ public class TransferService {
      * by the authenticatedUser object,
      * then updates a transfer based on the passed-in transfer.
      *
-     * @deprecated Not for use. Functionality not necessary for application type;
-     * no associated use case.
      *
      */
     public void updateTransfer(AuthenticatedUser authenticatedUser, Transfer transfer) {

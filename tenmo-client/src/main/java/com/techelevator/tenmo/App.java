@@ -216,9 +216,11 @@ public class App {
 				if(selection == 1){
 					transStatusId = transferStatusService.getTransferStatusByDesc(currentUser, "Approved").getTransferStatusId();
 					choice.setTransferStatusId(transStatusId);
+					transferService.updateTransfer(currentUser, choice);
 				} else if( selection == 2){
 					transStatusId = transferStatusService.getTransferStatusByDesc(currentUser, "Rejected").getTransferStatusId();
 					choice.setTransferStatusId(transStatusId);
+					transferService.updateTransfer(currentUser, choice);
 				} else {
 					System.out.println("Invalid input. ");
 				}

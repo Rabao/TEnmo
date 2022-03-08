@@ -108,22 +108,27 @@ public class AccountController {
     @PostMapping(path = "/transfer/{id}")
     @PreAuthorize("hasRole('USER')")
     public void initTransfer(@RequestBody @Valid Transfer transfer, @PathVariable int id) throws BadFunds {
+        if(transfer.getTransferStatusId() == transferStatusDao.getTransStatusByDesc("Approved").getTransferStatusId()) {
 
-        double transAmount = transfer.getAmount();
-        Account sender = accountDao.getAccountByAccountID(transfer.getAccountFrom());
-        Account receiver = accountDao.getAccountByAccountID(transfer.getAccountTo());
+            double transAmount = transfer.getAmount();
+            Account sender = accountDao.getAccountByAccountID(transfer.getAccountFrom());
+            Account receiver = accountDao.getAccountByAccountID(transfer.getAccountTo());
 
-        double newSenderBal = sender.getBalance() - transAmount;
-        if(newSenderBal >= 0){
-            sender.setBalance(newSenderBal);
-            receiver.setBalance(receiver.getBalance() + transAmount);
+            double newSenderBal = sender.getBalance() - transAmount;
+            if (newSenderBal >= 0) {
+                sender.setBalance(newSenderBal);
+                receiver.setBalance(receiver.getBalance() + transAmount);
+            } else {
+                throw new BadFunds();
+            }
+
+            transferDao.createTransfer(transfer);
+
+            accountDao.changeAccount(sender);
+            accountDao.changeAccount(receiver);
         } else {
-            throw new BadFunds();
+            transferDao.createTransfer(transfer);
         }
-
-        transferDao.createTransfer(transfer);
-        accountDao.changeAccount(sender);
-        accountDao.changeAccount(receiver);
 
     }
 
@@ -296,13 +301,13 @@ public class AccountController {
      *
      */
     @PutMapping(path = "/transfer/{id}")
-    @PreAuthorize("#username == authentication.principal.username")
+   // @PreAuthorize("#username == authentication.principal.username")
+    @PreAuthorize("hasRole('USER')")
     public void changeTransStatus(Principal principal, @RequestBody @Valid Transfer trans, @PathVariable int id ) throws BadFunds {
         if(trans.getTransferStatusId() == transferStatusDao.getTransStatusByDesc("Approved").getTransferStatusId()) {
             double transAmount = trans.getAmount();
             Account sender = accountDao.getAccountByAccountID(trans.getAccountFrom());
             Account receiver = accountDao.getAccountByAccountID(trans.getAccountTo());
-
 
 
             double newSenderBal = sender.getBalance() - transAmount;
@@ -312,7 +317,11 @@ public class AccountController {
             } else {
                 throw new BadFunds();
             }
-        } else {
+
+            transferDao.changeTransfer(trans);
+            accountDao.changeAccount(sender);
+            accountDao.changeAccount(receiver);
+        }  else {
             transferDao.changeTransfer(trans);
         }
     }
